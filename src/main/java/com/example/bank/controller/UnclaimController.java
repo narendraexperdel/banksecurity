@@ -18,18 +18,18 @@ import com.example.bank.model.Wettopup;
 import com.example.bank.service.WettopupService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/")
 public class UnclaimController {
 	
 	@Autowired
 	WettopupService wettopupService;
 
-	@GetMapping
+	@GetMapping("")
 	public String test() {
 		return "banksecurity working";
 	}
 	
-	@GetMapping("/topup/{id}")
+	@GetMapping("topup/{id}")
 	public ResponseEntity<Object> unclaimListbyId(@PathVariable Integer id) {
 		
 		Optional<Wettopup> wettopup = wettopupService.findWettopupbyId(id);
@@ -44,17 +44,18 @@ public class UnclaimController {
 		
 	}
 	
-	@GetMapping("/unclaim")
+	@GetMapping("unclaim")
 	public ResponseEntity<Object> allUnclaimList(){
 		
 		List<Wettopup> unclaimlist = wettopupService.getallUnclaimlist();
 		
-		Map<String,Object>  customizedlist = new HashMap<>();
+		Map<String,Object>  customizedlist = null;
 		List<Map<String, Object>> totallist = new ArrayList<>();
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		for(Wettopup wettopup : unclaimlist) {
+			customizedlist = new HashMap<>();
 		customizedlist.put("trancid", wettopup.getTrancid());
 		customizedlist.put("issuedby", wettopup.getIssuedby());
 		customizedlist.put("issueddate", wettopup.getIssueddate());

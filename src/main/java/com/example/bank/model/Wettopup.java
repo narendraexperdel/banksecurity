@@ -24,7 +24,7 @@ public class Wettopup {
 	@Column(name = "BONUS")
 	private Integer bonus;
 	@Column(name = "ISSUEDDT")
-	private Date issueddate;
+	private String issueddate;
 	@Column(name = "ISSUEDBY")
 	private String issuedby;
 	@Column(name = "USER_ID")
@@ -117,10 +117,10 @@ public class Wettopup {
 	public void setBonus(Integer bonus) {
 		this.bonus = bonus;
 	}
-	public Date getIssueddate() {
+	public String getIssueddate() {
 		return issueddate;
 	}
-	public void setIssueddate(Date issueddate) {
+	public void setIssueddate(String issueddate) {
 		this.issueddate = issueddate;
 	}
 	public String getIssuedby() {
