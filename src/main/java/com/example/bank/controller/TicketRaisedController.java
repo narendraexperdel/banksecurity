@@ -48,7 +48,7 @@ public class TicketRaisedController {
 			
 			model.put("code", HttpStatus.OK);
 			model.put("msg", "Ticket Raised Successfully");
-			model.put("data", "Your Ticket Id is : "+ticketraisedsaved.getTicketid());
+			model.put("data", "Your Ticket Id is : "+ticketraisedsaved.getId());
 			return new ResponseEntity<Object>(model, HttpStatus.OK);
 			
 			
