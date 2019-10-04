@@ -46,9 +46,9 @@ public class TicketRaisedController {
 			
 			TicketRaised ticketraisedsaved = ticketraisedService.saveticketraised(ticketraised);
 			
-			model.put("code", HttpStatus.OK);
+			model.put("code", HttpStatus.CREATED);
 			model.put("msg", "Ticket Raised Successfully");
-			model.put("data", "Your Ticket Id is : "+ticketraisedsaved.getId());
+			model.put("data", "Your Ticket Id is : "+ticketraisedsaved.getTicketid());
 			return new ResponseEntity<Object>(model, HttpStatus.OK);
 			
 			
@@ -60,6 +60,18 @@ public class TicketRaisedController {
 			return new ResponseEntity<Object>(model, HttpStatus.BAD_REQUEST);
 			
 		}
+	}
+	
+	@RequestMapping(value = "/ticketraised", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> getAllticket(@RequestBody TicketRaised ticketraised) {
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		model.put("code", HttpStatus.OK);
+		model.put("msg", "All Ticket Details");
+		model.put("data", ticketraisedService.allTicket());
+		return new ResponseEntity<Object>(model, HttpStatus.OK);
+		
 	}
 
 }

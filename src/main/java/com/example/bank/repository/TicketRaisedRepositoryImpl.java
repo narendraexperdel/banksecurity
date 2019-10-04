@@ -1,5 +1,7 @@
 package com.example.bank.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,10 @@ public class TicketRaisedRepositoryImpl {
 	
 	public TicketRaised saveticket(TicketRaised ticketraised) {
 		return ticketraisedRepository.save(ticketraised);
+	}
+	
+	public List<TicketRaised> allTicket(){
+		return ticketraisedRepository.findAll();
 	}
 
 }

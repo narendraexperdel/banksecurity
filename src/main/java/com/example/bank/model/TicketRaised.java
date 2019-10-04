@@ -78,6 +78,29 @@ public class TicketRaised {
 	public void setTicketraiseddate(String ticketraiseddate) {
 		this.ticketraiseddate = ticketraiseddate;
 	}
+
+	/*@Override
+	public String toString() {
+		return "TicketRaised [id=" + id + ", subject=" + subject + ", description=" + description + ", userid=" + userid
+				+ ", ticketid=" + ticketid + ", ticketraiseddate=" + ticketraiseddate + "]";
+	}*/
+
+	public TicketRaised(Integer id, String subject, String description, String userid, String ticketid,
+			String ticketraiseddate) {
+		super();
+		this.id = id;
+		this.subject = subject;
+		this.description = description;
+		this.userid = userid;
+		this.ticketid = ticketid;
+		this.ticketraiseddate = ticketraiseddate;
+	}
+
+	public TicketRaised() {
+		super();
+	}
+	
+	
 	
     
 }
