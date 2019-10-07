@@ -17,7 +17,7 @@ public class WettopupServiceImpl implements WettopupService {
 	
 	@Override
 	public Optional<Wettopup> findWettopupbyId(Integer id) {
-		return wettopupRepository.findById(id);
+		return null;
 	}
 
 	@Override

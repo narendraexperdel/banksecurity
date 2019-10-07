@@ -22,8 +22,8 @@ public class TicketRaised {
 	@Column(name = "Description")
 	private String description;
 	
-	@Column(name = "User_ID")
-	private String userid;
+	@Column(name = "Email_ID")
+	private String email;
 	
 	@Column(name = "Ticket_ID")
 	private String ticketid;
@@ -55,13 +55,7 @@ public class TicketRaised {
 		this.description = description;
 	}
 
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+	
 
 	public String getTicketid() {
 		return ticketid;
@@ -78,6 +72,19 @@ public class TicketRaised {
 	public void setTicketraiseddate(String ticketraiseddate) {
 		this.ticketraiseddate = ticketraiseddate;
 	}
+	
+	
+
+	public TicketRaised(Integer id, String subject, String description, String email, String ticketid,
+			String ticketraiseddate) {
+		super();
+		this.id = id;
+		this.subject = subject;
+		this.description = description;
+		this.email = email;
+		this.ticketid = ticketid;
+		this.ticketraiseddate = ticketraiseddate;
+	}
 
 	/*@Override
 	public String toString() {
@@ -85,15 +92,13 @@ public class TicketRaised {
 				+ ", ticketid=" + ticketid + ", ticketraiseddate=" + ticketraiseddate + "]";
 	}*/
 
-	public TicketRaised(Integer id, String subject, String description, String userid, String ticketid,
-			String ticketraiseddate) {
-		super();
-		this.id = id;
-		this.subject = subject;
-		this.description = description;
-		this.userid = userid;
-		this.ticketid = ticketid;
-		this.ticketraiseddate = ticketraiseddate;
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public TicketRaised() {

@@ -24,10 +24,10 @@ public class UnclaimController {
 	@Autowired
 	WettopupService wettopupService;
 
-	@GetMapping("")
+	/*@GetMapping("")
 	public String test() {
 		return "banksecurity working";
-	}
+	}*/
 	
 	@GetMapping("topup/{id}")
 	public ResponseEntity<Object> unclaimListbyId(@PathVariable Integer id) {

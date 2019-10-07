@@ -28,7 +28,14 @@ public class TicketRaisedController {
 	
 	SecureRandom random = new SecureRandom();
 	
-	@RequestMapping(value = "/ticketraised", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	  @RequestMapping(value ="", method = RequestMethod.GET)
+	    public String  index() {
+	       return "Ticket-Raised Application is working!";
+	    	/*return "   ";*/
+	    }
+	
+	@RequestMapping(value = "ticketraised", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveticketraised(@RequestBody TicketRaised ticketraised) throws SQLException {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -37,7 +44,7 @@ public class TicketRaisedController {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
-		if(ticketraised.getUserid() != null && ticketraised.getSubject() != null && ticketraised.getDescription() != null) {
+		if(ticketraised.getEmail() != null && ticketraised.getSubject() != null && ticketraised.getDescription() != null) {
 			
 			ticketraised.setTicketraiseddate(formatDateTime);
 			String ticketgenerated = Integer.toString(random.nextInt());
@@ -56,15 +63,15 @@ public class TicketRaisedController {
 		}else {
 			
 			model.put("code", HttpStatus.BAD_REQUEST);
-			model.put("msg", "Please Pass subject,Description and UserId");
+			model.put("msg", "Please Pass subject,Description and Email");
 			model.put("data", "Your Ticket is not created");
 			return new ResponseEntity<Object>(model, HttpStatus.BAD_REQUEST);
 			
 		}
 	}
 	
-	@RequestMapping(value = "/ticketraised", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getAllticket(@RequestBody TicketRaised ticketraised) throws SQLException {
+	@RequestMapping(value = "ticketraised", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> getAllticket() throws SQLException {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
