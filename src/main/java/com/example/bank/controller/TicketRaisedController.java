@@ -1,6 +1,7 @@
 package com.example.bank.controller;
 
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class TicketRaisedController {
 	SecureRandom random = new SecureRandom();
 	
 	@RequestMapping(value = "/ticketraised", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveticketraised(@RequestBody TicketRaised ticketraised) {
+	public ResponseEntity<Object> saveticketraised(@RequestBody TicketRaised ticketraised) throws SQLException {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
@@ -63,7 +64,7 @@ public class TicketRaisedController {
 	}
 	
 	@RequestMapping(value = "/ticketraised", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getAllticket(@RequestBody TicketRaised ticketraised) {
+	public ResponseEntity<Object> getAllticket(@RequestBody TicketRaised ticketraised) throws SQLException {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		

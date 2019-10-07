@@ -1,5 +1,6 @@
 package com.example.bank.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import com.example.bank.model.TicketRaised;
 @Service
 public interface TicketRaisedService {
 	
-	public TicketRaised saveticketraised(TicketRaised ticketraised);
+	public TicketRaised saveticketraised(TicketRaised ticketraised) throws SQLException;
 	
-	public List<TicketRaised> allTicket();
+	public List<TicketRaised> allTicket() throws SQLException;
 		
 }
