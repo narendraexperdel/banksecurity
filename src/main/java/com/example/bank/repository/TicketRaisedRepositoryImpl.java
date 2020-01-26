@@ -11,7 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
-import com.example.bank.model.TicketRaised;
+import com.example.bank.bean.TicketRaised;
+
 
 @Component
 public class TicketRaisedRepositoryImpl {

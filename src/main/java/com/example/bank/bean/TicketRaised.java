@@ -1,4 +1,4 @@
-package com.example.bank.model;
+package com.example.bank.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +30,37 @@ public class TicketRaised {
 	
 	@Column(name="Ticket_Raised_Date")
 	private String ticketraiseddate;
-
+	
+	@Column(name = "CASE_NUMBER")
+	private String casenumber;
+	
+	@Column(name = "USER_CONTACT")
+	private String usercontact;
+	
+	@Column(name = "STATUS")
+	private String status;
+	
+	@Column(name = "LAST_EDIT_DATE")
+	private String lasteditdate;
+	
+	@Column(name="ASSIGNTO")
+	private String assignto;
+	
+	@Column(name="GAME_NAME")
+	private String gamename;
+	
+	@Column(name = "USER_ID")
+	private String userid;
+	
+	@Column(name = "PLAYER_NAME")
+	private String playername;
+	
+	@Column(name = "IMAGE")
+	private String image;
+	
+	@Column(name = "FROM_TRANSFER")
+	private String fromtransfer;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -104,8 +134,87 @@ public class TicketRaised {
 	public TicketRaised() {
 		super();
 	}
-	
-	
+
+	public String getCasenumber() {
+		return casenumber;
+	}
+
+	public void setCasenumber(String casenumber) {
+		this.casenumber = casenumber;
+	}
+
+	public String getUsercontact() {
+		return usercontact;
+	}
+
+	public void setUsercontact(String usercontact) {
+		this.usercontact = usercontact;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getLasteditdate() {
+		return lasteditdate;
+	}
+
+	public void setLasteditdate(String lasteditdate) {
+		this.lasteditdate = lasteditdate;
+	}
+
+	public String getAssignto() {
+		return assignto;
+	}
+
+	public void setAssignto(String assignto) {
+		this.assignto = assignto;
+	}
+
+	public String getGamename() {
+		return gamename;
+	}
+
+	public void setGamename(String gamename) {
+		this.gamename = gamename;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getPlayername() {
+		return playername;
+	}
+
+	public void setPlayername(String playername) {
+		this.playername = playername;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getFromtransfer() {
+		return fromtransfer;
+	}
+
+	public void setFromtransfer(String fromtransfer) {
+		this.fromtransfer = fromtransfer;
+	}
+
 	
     
 }
