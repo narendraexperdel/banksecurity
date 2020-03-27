@@ -127,4 +127,23 @@ public class WettpServiceImpl implements WettpService {
 		return wettpRepository.outside_report_claim(companyid, frmproductid, toproductid, fromdate, todate, status);
 	}
 
+	@Override
+	public List<Wettp> cashflowproduct_tp(Date fromdate, Date todate, Integer companyid, String productid) {
+		// TODO Auto-generated method stub
+		return wettpRepository.cashflowproduct_tp(fromdate, todate, companyid, productid);
+	}
+
+	@Override
+	public List<Wettp> cashflowproduct_tp_toproduct(Date fromdate, Date todate, Integer companyid, String productid) {
+		// TODO Auto-generated method stub
+		return wettpRepository.cashflowproduct_tp_toproduct(fromdate, todate, companyid, productid);
+	}
+
+	@Override
+	public Double daily_mix_wettp_transferin_amount(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		// TODO Auto-generated method stub
+		return wettpRepository.daily_mix_wettp_transferin_amount(companyid, fromdate, todate, productid);
+	}
+
 }

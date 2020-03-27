@@ -47,6 +47,12 @@ public interface WettpService {
 		 public  List<Wettp> outside_report_unclaim(Integer companyid,List<String> frmproductid,List<String> toproductid,Date fromdate,Date todate);
 		 
 		 public List<Wettp> outside_report_claim(Integer companyid,List<String> frmproductid,List<String> toproductid,Date fromdate,Date todate,List<String> status);
+		 
+		 public List<Wettp> cashflowproduct_tp(Date fromdate,Date todate, Integer companyid, String productid);
+		 
+		 public List<Wettp> cashflowproduct_tp_toproduct(Date fromdate,Date todate, Integer companyid, String productid);
+		 
+		 public  Double  daily_mix_wettp_transferin_amount(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	
 
 }

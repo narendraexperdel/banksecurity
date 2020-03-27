@@ -1,5 +1,7 @@
 package com.example.bank.controller;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bank.bean.Newplayerregbean;
 import com.example.bank.model.CmcProduct;
+import com.example.bank.model.OthIncome;
 import com.example.bank.model.WemPlayer;
 import com.example.bank.model.Wettopup;
 import com.example.bank.model.Wetwithdraw;
@@ -89,8 +93,22 @@ public class HomeController {
 		List<Map<String,Object>> result_list = new ArrayList<>();
 		Map<String, Object> report_total = new HashMap<>();
 		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
 		
 		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}
 		
 			
         String productlist = newplayerreg.getProduct().get(0);
@@ -123,18 +141,35 @@ public class HomeController {
 			
 			report_total.put("transferout", home_transferout);
 			
-			Double home_topup = wettopupService.daily_mix_topup_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			List<Wettopup> home_topup = wettopupService.home_daily_mix_topup_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
 			
-			if(home_topup == null || home_topup == 0.0) {
-				home_topup = 0.0;
+             Iterator home_topup_itr = home_topup.iterator();
+			
+			while(home_topup_itr.hasNext()) {
+				
+				Double d_t_amount = (Double) home_topup_itr.next();
+				
+				if(d_t_amount == null || d_t_amount == 0.0) {
+					d_t_amount = 0.0;
+				}
+				
+				report_total.put("topup", d_t_amount);
 			}
 			
-			report_total.put("topup", home_topup);
 			
-			Long home_topup_trancid = wettopupService.daily_mix_topup_trancid(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			List<Wettopup> home_topup_trancid = wettopupService.home_daily_mix_topup_trancid(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
 			
 			
-			report_total.put("topuptrancid", home_topup_trancid);
+			for(Object home_topup_trancid_itr :home_topup_trancid) {
+	        	
+	        	System.out.println(((Integer)home_topup_trancid_itr));
+	        	
+	        	topup_trancid = new Double(home_topup_trancid_itr.toString());
+	        	report_total.put("topuptrancid", topup_trancid);
+	        	
+	        }
+			
+		
 			
 			Double  home_withdraw = wetwithdrawService.daily_mix_withdraw_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
 			
@@ -174,6 +209,20 @@ public class HomeController {
              }
              
              
+             List<Wettopup> d_topup_bonus = wettopupService.home_daily_mix_topup_bonus(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+    		 
+			 Iterator d_topup_bonus_itr = d_topup_bonus.iterator();
+			
+			while(d_topup_bonus_itr.hasNext()) {
+				
+				Double d_t_bonus = (Double) d_topup_bonus_itr.next();
+				
+				if(d_t_bonus == null || d_t_bonus == 0.0) {
+					d_t_bonus = 0.0;
+				}
+				
+				 report_total.put("topupbonus", d_t_bonus);
+			}
              
              
              List<Wettopup> freebonususerid = wettopupService.freebonus_home(newplayerreg.getDateOfissue(), newplayerreg.getTodate(), newplayerreg.getCompanyid1());
@@ -255,5 +304,418 @@ public class HomeController {
 	    
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
+	
+	
+	@PostMapping("home-total-transferout")
+	public ResponseEntity<Object> transferout(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			/*if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}*/
+		
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+		
+			
+			Double home_transferout = wettpService.daily_mix_wettp_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+			if(home_transferout == null || home_transferout == 0.0) {
+				home_transferout = 0.0;
+			}
+			
+			report_total.put("transferout", home_transferout);
+			
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping("home-total-topup")
+	public ResponseEntity<Object> toupup(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			/*if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}*/
+		
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+		
+			
+			List<Wettopup> home_topup = wettopupService.home_daily_mix_topup_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+            Iterator home_topup_itr = home_topup.iterator();
+			
+			while(home_topup_itr.hasNext()) {
+				
+				Double d_t_amount = (Double) home_topup_itr.next();
+				
+				if(d_t_amount == null || d_t_amount == 0.0) {
+					d_t_amount = 0.0;
+				}
+				
+				report_total.put("topup", d_t_amount);
+			}
+			
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping("home-total-trancid")
+	public ResponseEntity<Object> toupuptrancid(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			/*if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}*/
+		
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+		
+			
+	List<Wettopup> home_topup_trancid = wettopupService.home_daily_mix_topup_trancid(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+			
+			for(Object home_topup_trancid_itr :home_topup_trancid) {
+	        	
+	        	System.out.println(((Integer)home_topup_trancid_itr));
+	        	
+	        	topup_trancid = new Double(home_topup_trancid_itr.toString());
+	        	report_total.put("topuptrancid", topup_trancid);
+	        	
+	        }
+			
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("home-withdraw")
+	public ResponseEntity<Object> withdraw(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			/*if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}*/
+		
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+          Double  home_withdraw = wetwithdrawService.daily_mix_withdraw_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+			if(home_withdraw == null || home_withdraw == 0.0) {
+				home_withdraw = 0.0;
+			}
+			
+			report_total.put("withdraw", home_withdraw);
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("home-withdrawtrancid")
+	public ResponseEntity<Object> withdrawtrancid(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			/*if(newplayerreg.getDateOfissue() != null && newplayerreg.getTodate() != null) {
+				 Date fromdate = newplayerreg.getDateOfissue();
+				 Date toadte = newplayerreg.getDateOfissue();
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				    newplayerreg.setDateOfissue(new Date(sdf.format(fromdate)));
+				    newplayerreg.setTodate(new Date(sdf.format(fromdate)));
+			}*/
+		
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+          Double  home_withdraw = wetwithdrawService.daily_mix_withdraw_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+			if(home_withdraw == null || home_withdraw == 0.0) {
+				home_withdraw = 0.0;
+			}
+			
+			report_total.put("withdraw", home_withdraw);
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	
+	@PostMapping("Oth-income")
+	public ResponseEntity<Object> otherincome(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+		
+			List<OthIncome> home_othincome = othincomeService.home_othincome(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate()); 
+      
+			
+            Iterator othincomeamount_itr = home_othincome.iterator();
+			
+			while(othincomeamount_itr.hasNext()) {
+				
+				BigDecimal obj1 = (BigDecimal) othincomeamount_itr.next();
+				
+				if(obj1 != null) {
+				
+				Double  obj2 = obj1.doubleValue();
+				
+				
+				if(obj2 == null || obj2 == 0.0) {
+					obj2 = 0.0;
+				}
+				
+				report_total.put("homeothincome", obj2);
+			
+			}else {
+				report_total.put("homeothincome", 0);
+			}
+			
+			
+			}
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home othincome data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("home-transferin")
+	public ResponseEntity<Object> hometransferin(@RequestBody  Newplayerregbean newplayerreg){
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Map<String, Object> report_total = new HashMap<>();
+		int i = 0;
+		Double topup_trancid = 0.0;
+		
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+        String productlist = newplayerreg.getProduct().get(0);
+			
+			List<String> temp_product_list = new ArrayList<>();
+			
+			if(productlist == null) {
+				
+					List<CmcProduct> productlist_all = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+					for(CmcProduct productlist_itr: productlist_all) {
+						temp_product_list.add(productlist_itr.getFldesc());
+					}
+				}else {
+					temp_product_list = newplayerreg.getProduct();
+				}
+			
+          Double home_transferin = wettpService.daily_mix_wettp_transferin_amount(newplayerreg.getCompanyid1(), newplayerreg.getDateOfissue(), newplayerreg.getTodate(), temp_product_list);
+			
+			if(home_transferin == null || home_transferin == 0.0) {
+				home_transferin = 0.0;
+			}
+			
+			report_total.put("transferin", home_transferin);
+			
+			
+		}
+		
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "home report data");
+	    response.put("data", report_total);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("left-nav")
+	public ResponseEntity<Object> leftnav(@RequestBody  Newplayerregbean newplayerreg){
+		
+		
+		
+		return null;
+	}
+	
 	
 }

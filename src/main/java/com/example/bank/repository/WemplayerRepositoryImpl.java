@@ -284,6 +284,30 @@ SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return list;
 	}
 
+	@Override
+	public List<WemPlayer> birthdayplayer(Integer companyid, Date fromdate, Date todate) {
+		String SQL_Query = "select wm.id,wm.FLNAME,wm.TELNO FROM wem_player as wm\r\n" + 
+				"WHERE MONTH(DOB) =month(getdate()) and COMPANY_ID =:companyid";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("companyid", companyid);
+		
+		List<WemPlayer> list = query.list();
+		return list;
+	}
+	@Override
+	public List<WemPlayer> getallprofiledatarbycompanyid(Integer companyid) {
+		String SQL_Query = "select ID,FLNAME,TELNO,BANKACC from WEM_PLAYER where COMPANY_ID  =:companyid and id > 25394 and id < 27083";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("companyid", companyid);
+	
+		 @SuppressWarnings("unchecked")
+		    List<WemPlayer> list = (List<WemPlayer>) query.list();
+		return list;
+	}
+
 	
 
 }

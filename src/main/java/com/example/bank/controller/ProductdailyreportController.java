@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bank.bean.Newplayerregbean;
 import com.example.bank.model.CmcProduct;
+import com.example.bank.model.MainCompany;
+import com.example.bank.model.ProductClosing;
 import com.example.bank.model.Wettopup;
 import com.example.bank.service.CmcproductService;
+import com.example.bank.service.ProductClosingService;
 import com.example.bank.service.ReferalbonusService;
 import com.example.bank.service.WettopupService;
 import com.example.bank.service.WettpService;
@@ -44,6 +47,9 @@ public class ProductdailyreportController {
 	
 	@Autowired
 	ReferalbonusService referalbonusService;
+	
+	@Autowired
+	ProductClosingService productclosingService;
 	
 	@PostMapping("productdaily")
 	public ResponseEntity<Object> productdaily(@RequestBody  Newplayerregbean newplayerreg){
@@ -201,8 +207,31 @@ public class ProductdailyreportController {
 				temp_member_account.put("referalbonus", referalbonus);
 				temp_member_account.put("wl", topup - withdraw);
 				
-			
-				temp_member_account.put("closing", cmcproduct_itr.getClosing());;
+				System.out.println(date);
+				System.out.println(new Date());
+				
+				SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+				String formdateformat = dt1.format(date);
+				String currentdateformat = dt1.format(new Date());
+				
+			    if(formdateformat.equals(currentdateformat)) {
+			    	System.out.println("today date");
+			    	temp_member_account.put("closing", cmcproduct_itr.getClosing());
+			    }else {
+			    	System.out.println("previous date");
+			    	
+			    	List<ProductClosing> prdclosing = productclosingService.getclosing(newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc(), date);
+					
+					Double prevclosing = 0.0;
+					
+					for(ProductClosing prdclosing_itr : prdclosing) {
+						
+						prevclosing =  prdclosing_itr.getClosing();
+						
+						temp_member_account.put("closing", prevclosing);
+					}
+			    }
+				
 				
 			result_list.add(temp_member_account);
 				
@@ -329,13 +358,39 @@ public class ProductdailyreportController {
 		report_total.put("referalbonus", referalbonus_total);
 		report_total.put("wl", topup_total - withdraw_total);
 		
-		Double reportclosing = cmcproductService.getreportclosing(newplayerreg.getCompanyid1());
 		
-		if(reportclosing == null || reportclosing == 0.0) {
-			reportclosing = 0.0;
-		}
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+		String formdateformat = dt1.format(date);
+		String currentdateformat = dt1.format(new Date());
 		
-		report_total.put("closing", reportclosing);
+		
+		
+		if(formdateformat.equals(currentdateformat)) {
+
+			Double reportclosing = cmcproductService.getreportclosing(newplayerreg.getCompanyid1());
+			
+			if(reportclosing == null || reportclosing == 0.0) {
+				reportclosing = 0.0;
+			}
+			
+			report_total.put("closing", reportclosing);
+			
+	    }else {
+	    	System.out.println("previous date");
+	    	
+	    	Double reportclosingsum = productclosingService.getclosingsumreport(newplayerreg.getCompanyid1(), date);
+			
+	    	if(reportclosingsum == null || reportclosingsum == 0.0) {
+	    		reportclosingsum = 0.0;
+			}
+			
+			
+	    	report_total.put("closing", reportclosingsum);
+			
+	    }
+		
+		
+		
 		
 	result_list.add(report_total);
 		
@@ -347,5 +402,185 @@ public class ProductdailyreportController {
 	    
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 		}
+	
+	
+	
+	
+	@PostMapping("updateclosing")
+	public ResponseEntity<Object> updateclosing(@RequestBody  Newplayerregbean newplayerreg){
+		
+		List<Wettopup> wettopup = new ArrayList<Wettopup>();
+		Map<String, Object> response = new HashMap<>();
+		List<Map<String,Object>> result_list = new ArrayList<>();
+		Date   date = newplayerreg.getDateOfissue();
+		Date dtnextday = newplayerreg.getDateOfissue();
+		
+		Date dtf =newplayerreg.getDateOfissue();
+		Calendar cf = Calendar.getInstance(); 
+		cf.setTime(dtf); 
+		cf.add(Calendar.DATE, -1);
+		dtf = cf.getTime();
+		
+		SimpleDateFormat formatf = new SimpleDateFormat("yyyy-MM-dd");
+
+		String dateStringf = formatf.format(newplayerreg.getDateOfissue());
+		String dtnextdayf = formatf.format(newplayerreg.getDateOfissue());
+		String dateString1f = formatf.format(dtf);
+		try {
+			  date  = formatf.parse (dateStringf);
+			  dtf = formatf.parse(dateString1f);
+			  dtnextday = formatf.parse(dtnextdayf);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
+		
+		if(newplayerreg.getCompanyid1() != null) {
+			
+			
+			
+			List<CmcProduct> cmcproduct = cmcproductService.getallproductbycompany(newplayerreg.getCompanyid1());
+			
+			for(int i=1; i<=103; i++) {
+				
+				
+				date = dtnextday;
+			
+			for(CmcProduct cmcproduct_itr : cmcproduct) {
+				
+				
+				
+				
+	              Double topup = wettopupService.productdaily_topup(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double withdraw = wetwithdrawService.productdaily_withdraw(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double bonus = wettopupService.productdaily_bonus(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double transferin = wettpService.productdaily_in(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double transferout = wettpService.productdaily_out(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double masterpoint = wettopupService.productdaily_master(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double referalbonus = referalbonusService.productdaily_referal(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				Double adjustment = wettopupService.productdaily_adjustment(date, newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc());
+				
+				
+				
+				
+			 	if(topup == null || topup == 0.0) {
+					topup = 0.0;
+				}
+				
+				if(bonus == null || bonus == 0.0) {
+					bonus = 0.0;
+				}
+				
+				
+				if(adjustment == null || adjustment == 0.0) {
+					adjustment = 0.0;
+				}
+				
+				
+				if(withdraw == null || withdraw == 0.0) {
+					withdraw = 0.0;
+				}
+				
+				if(transferin == null || transferin == 0.0) {
+					transferin = 0.0;
+				}
+				
+				if(transferout == null || transferout == 0.0) {
+					transferout = 0.0;
+				}
+				
+
+				if(masterpoint == null || masterpoint == 0.0) {
+					masterpoint = 0.0;
+				}
+
+				if(referalbonus == null || referalbonus == 0.0) {
+					referalbonus = 0.0;
+				}
+				
+				Date dt =date;
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dt); 
+				c.add(Calendar.DATE, -1);
+				dt = c.getTime();
+				
+				
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+				String dateString = format.format(newplayerreg.getDateOfissue());
+				String dateString1 = format.format(dt);
+				try {
+					 /* date  = format.parse (dateString);*/
+					  dt = format.parse(dateString1);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+				
+				
+				 dtnextday =date;
+				Calendar c1 = Calendar.getInstance(); 
+				c1.setTime(dtnextday); 
+				c1.add(Calendar.DATE, 1);
+				dtnextday = c1.getTime();
+				
+				
+				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+				String dateStringnextdat = format1.format(newplayerreg.getDateOfissue());
+				String dateString1nextday = format1.format(dtnextday);
+				try {
+					 /* date  = format.parse (dateString);*/
+					  dtnextday = format.parse(dateString1nextday);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+				
+				
+				List<ProductClosing> prdclosing = productclosingService.getclosing(newplayerreg.getCompanyid1(), cmcproduct_itr.getFldesc(), dt);
+				
+				Double prevclosing = 0.0;
+				
+				for(ProductClosing prdclosing_itr : prdclosing) {
+					
+					prevclosing =  prdclosing_itr.getClosing();
+				}
+				
+				Double closingfinal = prevclosing - topup + withdraw - bonus - transferin + transferout - adjustment - referalbonus;
+				
+				ProductClosing productClosing = new ProductClosing();
+				
+				productClosing.setDate(date);
+				
+				MainCompany maincomapny = new MainCompany();
+				maincomapny.setId(newplayerreg.getCompanyid1());
+				
+				productClosing.setCompanyid(maincomapny);
+				productClosing.setProductid(cmcproduct_itr.getFldesc());
+				productClosing.setClosing(closingfinal);
+				
+				productclosingService.saveproductclosing(productClosing);
+				
+			}
+			
+			
+			}
+		}
+		response.put("code", HttpStatus.OK);
+	    response.put("msg", "closing upadted for date"+ newplayerreg.getDateOfissue());
+	    response.put("data", result_list);
+	    
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		}
+	
+	
 
 }

@@ -1,9 +1,12 @@
 package com.example.bank.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +66,7 @@ public class DailymixController {
 	List<Wettopup> mix_userid = new ArrayList<>();
 	String conmethod = null;
 	Double wl = 0.0;
+	Double topup_trancid = 0.0;
 	
 	if(wettopup.getCompanyid1() != null) {
 		String productlist = wettopup.getProductid().get(0);
@@ -81,7 +85,46 @@ public class DailymixController {
 		
 		List<Wettopup> dailymix_topup = wettopupService.daily_mix_wettopup(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
 		 
-		 for(Wettopup wettopup_itr : dailymix_topup) {
+		
+		   Iterator dailymix_topup_itr = dailymix_topup.iterator();
+		   while(dailymix_topup_itr.hasNext()) {
+			   Map<String, Object> temp_player_info = new HashMap<>();
+			   
+			   Object[] obj = (Object[]) dailymix_topup_itr.next();
+			   
+			   Map<String,Object> temp_dailymix_topup = new HashMap<>();
+				 
+				 temp_dailymix_topup.put("trancid", String.valueOf(obj[0]));
+				 temp_dailymix_topup.put("userid", String.valueOf(obj[6]));
+				 temp_dailymix_topup.put("product", String.valueOf(obj[12]));
+				 temp_dailymix_topup.put("amount", String.valueOf(obj[2]));
+				 temp_dailymix_topup.put("bonus", String.valueOf(obj[3]));
+				 
+				 
+				 Calendar cal = Calendar.getInstance();
+				// remove next line if you're always using the current time.
+				 Date date1 = new Date();
+				try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(obj[16]));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+				 
+				cal.setTime(date1);
+				cal.add(Calendar.HOUR, -8);
+				Date fiveandHourBack = cal.getTime();
+				 
+				 
+				 
+				 temp_dailymix_topup.put("claimdate", String.valueOf(obj[16]));
+				 
+				 result_list_d_topup.add(temp_dailymix_topup);
+		   }
+		
+		
+		
+		 /*for(Wettopup wettopup_itr : dailymix_topup) {
 			 
 			 Map<String,Object> temp_dailymix_topup = new HashMap<>();
 			 
@@ -103,33 +146,50 @@ public class DailymixController {
 			 temp_dailymix_topup.put("claimdate", fiveandHourBack);
 			 
 			 result_list_d_topup.add(temp_dailymix_topup);
-		 }
+		 }*/
 		 
 		 Map<String,Object> temp_dailymix_topup = new HashMap<>();
 		 
-		 Double  d_topup_amount = wettopupService.daily_mix_topup_amount(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
+		 List<Wettopup>  d_topup_amount = wettopupService.daily_mix_topup_amount(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
 		 
-		 Double d_topup_bonus = wettopupService.daily_mix_topup_bonus(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
+		 Iterator d_topup_amount_itr = d_topup_amount.iterator();
+			
+			while(d_topup_amount_itr.hasNext()) {
+				
+				Double d_t_amount = (Double) d_topup_amount_itr.next();
+				
+				if(d_t_amount == null || d_t_amount == 0.0) {
+					d_t_amount = 0.0;
+				}
+				
+				temp_dailymix_topup.put("amount_total", d_t_amount);
+			}
+				List<Wettopup> d_topup_bonus = wettopupService.daily_mix_topup_bonus(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
 		 
-		 Long d_topup_trancid = wettopupService.daily_mix_topup_trancid(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
+				 Iterator d_topup_bonus_itr = d_topup_bonus.iterator();
+				
+				while(d_topup_bonus_itr.hasNext()) {
+					
+					Double d_t_bonus = (Double) d_topup_bonus_itr.next();
+					
+					if(d_t_bonus == null || d_t_bonus == 0.0) {
+						d_t_bonus = 0.0;
+					}
+					
+					temp_dailymix_topup.put("bonus_total", d_t_bonus);
+				}
+				
+				List<Wettopup> d_topup_trancid = wettopupService.daily_mix_topup_trancid(wettopup.getCompanyid1(), wettopup.getDateOfissue(), wettopup.getTodate(), temp_product_list);
 	
-		   if(d_topup_amount == null || d_topup_amount == 0.0) {
-			 d_topup_amount = 0.0;
-			}
-			
-			if(d_topup_bonus == null || d_topup_bonus == 0.0) {
-				d_topup_bonus = 0.0;
-			}
-			
-			
-			if(d_topup_trancid == null || d_topup_trancid == 0) {
-				d_topup_trancid = (long) 0;
-			}
-			
-			temp_dailymix_topup.put("trancid_total", d_topup_trancid);
-			temp_dailymix_topup.put("amount_total", d_topup_amount);
-			temp_dailymix_topup.put("bonus_total", d_topup_bonus);
-			
+				for(Object d_topup_trancid_itr :d_topup_trancid) {
+		        	
+		        	System.out.println(((Integer)d_topup_trancid_itr));
+		        	
+		        	topup_trancid = new Double(d_topup_trancid_itr.toString());
+		        	temp_dailymix_topup.put("trancid_total", topup_trancid);
+		        	
+		        }
+				
 			result_list_d_topup_total.add(temp_dailymix_topup);
 			
 			

@@ -7,6 +7,6 @@ import com.example.bank.bean.TicketRaised;
 
 
 @Component
-public interface TicketRaisedRepository extends JpaRepository<TicketRaised, Integer>{
+public interface TicketRaisedRepository extends JpaRepository<TicketRaised, Integer>,TicketRaisedCustomRepository{
 
 }

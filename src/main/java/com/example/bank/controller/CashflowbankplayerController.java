@@ -157,7 +157,7 @@ public class CashflowbankplayerController {
 						}
 						
 						temp_cashflowbank_list.put("bank", obj1.getCompanybank());
-						temp_cashflowbank_list.put("userid", obj1.getUserid());
+						temp_cashflowbank_list.put("userid", obj1.getUserid().toUpperCase());
 						temp_cashflowbank_list.put("contactmethod", conmethod);
 						temp_cashflowbank_list.put("topup", cashflowproduct_topup);
 						temp_cashflowbank_list.put("withdraw", cashflowproduct_withdraw);

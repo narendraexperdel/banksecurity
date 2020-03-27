@@ -34,4 +34,10 @@ public class OthIncomeServiceImpl implements OthIncomeService{
 		return othincomeRepository.outside_report_othincome(bank, companyid, incometype, incomedet, fromdate, todate);
 	}
 
+	@Override
+	public List<OthIncome> home_othincome(Integer companyid, Date fromdate, Date todate) {
+		// TODO Auto-generated method stub
+		return othincomeRepository.home_othincome(companyid, fromdate, todate);
+	}
+
 }

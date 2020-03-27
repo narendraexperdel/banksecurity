@@ -128,4 +128,18 @@ public class OthIncomeRepositoryImpl implements OthIncomeCustomRepository{
 	
 	}
 
+	@Override
+	public List<OthIncome> home_othincome(Integer companyid, Date fromdate, Date todate) {
+		String SQL_Query = "select Sum(Amount) from OTH_INCOME where COMPANY_ID =:companyid and issueddt between :fromdate and :todate";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("companyid", companyid);
+		
+		List<OthIncome> list = query.list();
+		
+		return list;
+	}
+
 }

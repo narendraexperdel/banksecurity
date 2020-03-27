@@ -250,9 +250,9 @@ public class NewplayerbyregControler {
 		while(itr_table.hasNext()){
 		   Object[] obj = (Object[]) itr_table.next();
 		   //now you have one array of Object for each row
-		   String client = String.valueOf(obj[0]); // don't know the type of column CLIENT assuming String 
+		   /*String client = String.valueOf(obj[0]); // don't know the type of column CLIENT assuming String 
 		   Integer service = Integer.parseInt(String.valueOf(obj[1])); //SERVICE assumed as int
-		   //same way for all obj[2], obj[3], obj[4]
+*/		   //same way for all obj[2], obj[3], obj[4]
 		
 			
 			/**

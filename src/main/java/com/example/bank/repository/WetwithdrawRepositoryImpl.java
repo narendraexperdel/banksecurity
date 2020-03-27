@@ -733,4 +733,51 @@ if(!userid.isEmpty()) {
 		return (Double) cr.uniqueResult();
 	}
 
+	@Override
+	public List<String> weeklywithdrawuserid(Integer companyid, Date fromdate, Date todate,String userid,
+			String productid) {
+		String SQL_Query = "select DISTINCT(USER_ID),Product_id,SUM(AMOUNT) from WET_Withdraw WHERE ISSUEDDT between :fromdate and :todate\r\n" + 
+				"and status = 'Posted' and company_id =:companyid\r\n" + 
+				"group by user_id,Product_id" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("companyid", companyid);
+		
+		List<String> list = query.list();
+		
+
+	       return list;
+	}
+
+	@Override
+	public Double withdrawamount_profiledata(List<String> userid, Integer companyid) {
+		Double amount = 0.0;
+		if(!userid.isEmpty()) {
+				Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wetwithdraw.class).add(
+				        Restrictions.and
+				        
+				        (
+				        		
+				            Restrictions.eq("companyid.id", companyid),
+				            Restrictions.in("userid", userid),
+				            Restrictions.eq("status", "Posted")
+				           
+				        )
+				    );
+				
+				ProjectionList projectionList = Projections.projectionList();
+			    
+			    cr.setProjection(Projections.sum("amount"));
+				return (Double) cr.uniqueResult();
+		}else {
+			return amount;
+		}
+	}
+
+	
+
 }

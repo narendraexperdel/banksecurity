@@ -19,6 +19,30 @@ public class MaterKioskServiceImpl implements MasterKioskService {
 		// TODO Auto-generated method stub
 		return masterkioskRepository.getmasterkiosk(companyid, productid);
 	}
+
+	@Override
+	public void savemasterkiosk(MasterKiosk masterkiosk) {
+		// TODO Auto-generated method stub
+		masterkioskRepository.savemasterkiosk(masterkiosk);
+	}
+
+	@Override
+	public List<MasterKiosk> getmasterkiosk() {
+		return masterkioskRepository.findAll();
+		
+	}
+
+	@Override
+	public void deletemasterkiosk(MasterKiosk masterkiosk) {
+		// TODO Auto-generated method stub
+		masterkioskRepository.delete(masterkiosk);
+	}
+
+	@Override
+	public void updatemasterkiosk(MasterKiosk masterkiosk) {
+		// TODO Auto-generated method stub
+		masterkioskRepository.save(masterkiosk);
+	}
 	
 	
 

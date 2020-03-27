@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -1767,14 +1768,32 @@ Double amount = 0.0;
 		c.add(Calendar.DATE, -1);
 		fromdate = c.getTime();*/
 		
-		Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
+		String SQL_Query = "select * from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and CAST(CLAIMDT as date) between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
+		/*Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
 		        Restrictions.and
 		        
 		        (
 		        		
 		            Restrictions.eq("companyid.id", companyid),
-		           /* Restrictions.in("promotioncd", userid),*/
-		            Restrictions.between("issueddate", fromdate, todate),
+		            Restrictions.in("promotioncd", userid),
+		            Restrictions.between("csdonetime", fromdate, todate),
 		            Restrictions.eq("status", "Posted"),
 		            Restrictions.isNull("adjustmenttype"),
 		            Restrictions.like("adjustmentcategory", "NULL", MatchMode.ANYWHERE),
@@ -1782,16 +1801,37 @@ Double amount = 0.0;
 		       
 		           
 		        )
-		    );
+		    );*/
 	 
 	 
 	   
-       return cr.list();
 	}
 
+	
+
 	@Override
-	public Double daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate,
+	public List<Wettopup> daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate,
 			List<String> productid) {
+		
+		
+		String SQL_Query = "select Sum(Amount) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and CAST(CS_DONE_DATETIME as date) between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
 		
 		/*String pattern = "yyyy-mm-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -1804,7 +1844,7 @@ Double amount = 0.0;
 		c.add(Calendar.DATE, -1);
 		fromdate = c.getTime();*/
 		
-		Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
+		/*Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
 		        Restrictions.and
 		        (
 		        		  Restrictions.eq("companyid.id", companyid),
@@ -1821,11 +1861,11 @@ Double amount = 0.0;
 		ProjectionList projectionList = Projections.projectionList();
 	    
 	    cr.setProjection(Projections.sum("amount"));
-		return (Double) cr.uniqueResult();
+		return (Double) cr.uniqueResult();*/
 	}
 
 	@Override
-	public Double daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate, List<String> productid) {
+	public List<Wettopup> daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate, List<String> productid) {
 		
 		/*String pattern = "yyyy-mm-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -1838,28 +1878,28 @@ Double amount = 0.0;
 		c.add(Calendar.DATE, -1);
 		fromdate = c.getTime();*/
 		
-		Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
-		        Restrictions.and
-		        (
-		        		  Restrictions.eq("companyid.id", companyid),
-		        		  Restrictions.between("issueddate", fromdate, todate),
-				            Restrictions.eq("status", "Posted"),
-				            Restrictions.isNull("adjustmenttype"),
-				            Restrictions.like("adjustmentcategory", "NULL", MatchMode.ANYWHERE),
-				            Restrictions.in("productid", productid)
-				           
-		           
-		        )
-		    );
+		String SQL_Query = "select Sum(BONUS) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and CAST(CS_DONE_DATETIME as date) between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
 		
-		ProjectionList projectionList = Projections.projectionList();
-	    
-	    cr.setProjection(Projections.sum("bonus"));
-		return (Double) cr.uniqueResult();
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
 	}
 
 	@Override
-	public Long daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate,
+	public List<Wettopup> daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate,
 			List<String> productid) {
 		
 		/*String pattern = "yyyy-mm-dd";
@@ -1873,7 +1913,27 @@ Double amount = 0.0;
 		c.add(Calendar.DATE, -1);
 		fromdate = c.getTime();*/
 		
-		Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
+		
+		String SQL_Query = "select Count(TRANC_ID) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and CAST(CS_DONE_DATETIME as date) between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
+		
+	/*	Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettopup.class).add(
 		        Restrictions.and
 		        (
 		        		  Restrictions.eq("companyid.id", companyid),
@@ -1890,7 +1950,7 @@ Double amount = 0.0;
 		ProjectionList projectionList = Projections.projectionList();
 	    
 	    cr.setProjection(Projections.count("trancid"));
-		return (Long) cr.uniqueResult();
+		return (Long) cr.uniqueResult();*/
 	}
 
 	@Override
@@ -2264,6 +2324,209 @@ Double amount = 0.0;
 		List<Wettopup> list = query.list();
 		return list;
 	}
-	
 
+	@Override
+	public List<Wettopup> promotioncount(String promotioncd, List<String> userid, Integer companyid) {
+		String SQL_Query = "select Count(TRANC_ID) from WET_TOPUP where Status = 'Posted' \r\n" + 
+				"and COMPANY_ID =:companyid and USER_ID In (:userid) and PROMOTIONCD =:promotioncd";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("companyid", companyid);
+		query.setParameter("userid", userid);
+		query.setParameter("promotioncd", promotioncd);
+		List<Wettopup> list = query.list();
+		return list;
+	}
+
+	@Override
+	public List<Wettopup> promotioncount_monthly(String promotioncd, List<String> userid, Integer companyid) {
+		String SQL_Query = "select Count(TRANC_ID) from WET_TOPUP where Status = 'Posted' \r\n" + 
+				"and COMPANY_ID =:companyid and USER_ID In (:userid) and PROMOTIONCD =:promotioncd and "
+				+ "Month(CS_DONE_DATETIME) = MONTH(CURRENT_TIMESTAMP) AND YEAR(CS_DONE_DATETIME) = YEAR(CURRENT_TIMESTAMP)";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("companyid", companyid);
+		query.setParameter("userid", userid);
+		query.setParameter("promotioncd", promotioncd);
+		List<Wettopup> list = query.list();
+		return list;
+	
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		String SQL_Query = "select Sum(Amount) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and ISSUEDDT between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
+		
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		String SQL_Query = "select Sum(Bonus) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and ISSUEDDT between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		String SQL_Query = "select Count(TRANC_ID) from WET_TOPUP where company_id =:companyid\r\n" + 
+				"and ISSUEDDT between :fromdate and :todate\r\n" +
+				"and status = 'Posted'\r\n" + 
+				"and adjustment_type is null\r\n" + 
+				"and adjustment_category = 'NULL' AND Product_ID In (:productid)" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		
+
+	       return list;
+	}
+
+	@Override
+	public List<Wettopup> eligiblebirthday(Integer companyid, List<String> productid, List<String> userid) {
+		
+		List<Wettopup> list = new ArrayList<>();
+		
+		if(!userid.isEmpty() && !productid.isEmpty()) {
+		
+		String SQL_Query = "select top(1) USER_ID,PRODUCT_ID  from WET_TOPUP \r\n" + 
+				"where USER_ID In (:userid)  and PRODUCT_ID In (:productid) and Company_id =:companyid\r\n" + 
+				"group by USER_ID,PRODUCT_ID order by sum(AMOUNT) desc  " ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		
+		query.setParameter("productid", productid);
+		query.setParameter("companyid", companyid);
+		query.setParameter("userid", userid);
+		
+	           list = query.list();
+		
+		
+		}
+
+	       return list;
+	}
+
+	@Transactional
+	@Override
+	public void insertbirthday(Wettopup wettopup) {
+		String SQL_Query = "\r\n" + 
+				"Insert into WET_TOPUP(TELNO, AMOUNT, ISSUEDDT, ISSUEDBY, USER_ID, CLAIM, TIME, PRODUCT_ID, \r\n" + 
+				"ADJUSTMENT, STATUS, ADJUSTMENT_REMARK ,ADJUSTMENT_TYPE, KIOSK_STATUS, ADJUSTMENT_CATEGORY, SPECIAL, COMPANY_id)\r\n" + 
+				"VALUES(:telno,:amount,getdate(),:issuedby, :userid, 'N',getdate(),\r\n" + 
+				":productid, 'N', 'T', :adjremark,:adjtype, 'Pending', :adjcategory, 'No', :companyid)";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("issuedby", wettopup.getIssuedby());
+		query.setParameter("telno", wettopup.getTelno());
+		query.setParameter("amount", 1);
+		query.setParameter("userid", wettopup.getUserid());
+		query.setParameter("productid", wettopup.getProductid());
+		query.setParameter("adjremark", "Birthday Bonus");
+		query.setParameter("adjtype", "User");
+		query.setParameter("adjcategory", "Birthday");
+		query.setParameter("companyid", wettopup.getCompanyid());
+		
+		System.out.println("=================================");
+		System.out.println("Birthday Bonus Inserted for  "+wettopup.getUserid()+"  "+wettopup.getProductid()+"  "+wettopup.getCompanyid().getId());
+		System.out.println("=================================");
+		
+		int result =  query.executeUpdate();
+		
+	}
+
+	@Override
+	public List<String> weeklyuserid(Integer companyid, Date fromdate, Date todate) {
+		String SQL_Query = "select DISTINCT(USER_ID),PRODUCT_ID,SUM(AMOUNT) from WET_TOPUP WHERE ISSUEDDT between :fromdate and :todate\r\n" + 
+				"and status = 'Posted' and Adjustment_type is null and adjustment_category = 'NULL' and company_id =:companyid\r\n" + 
+				"group by user_id,product_id" ;
+		
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("companyid", companyid);
+		
+		List<String> list = query.list();
+		
+
+	       return list;
+	}
+
+	@Override
+	public List<Wettopup> teledata(String month, String year, Integer companyid) {
+		String SQL_Query = "select distinct(user_id) FROM wet_topup WHERE MONTH(issueddt) =:month AND\r\n" + 
+				" YEAR(ISSUEDDT) =:year and company_id =:companyid and status = 'Posted' and adjustment_type is null and adjustment_category = 'NULL' \r\n" + 
+				" order by USER_ID ";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
+		query.setParameter("companyid", companyid);
+		
+		List<Wettopup> list = query.list();
+		return list;
+	}
+
+	@Override
+	public List<Wettopup> lastdepositdateandamount(Integer companyid, String userid,String month,String year) {
+		String SQL_Query = "select top(1)USER_ID,AMOUNT,ISSUEDDT,mc.COMPANY_NAME from WET_TOPUP as wt\r\n" + 
+				" join MAIN_COMPANY as mc on wt.COMPANY_id = mc.ID\r\n" + 
+				" where USER_ID =:userid and MONTH(issueddt) =:month AND\r\n" + 
+				" YEAR(ISSUEDDT) =:year and company_id =:companyid and status = 'Posted' and adjustment_type is null and\r\n" + 
+				"  adjustment_category = 'NULL' order by ISSUEDDT desc";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
+		query.setParameter("companyid", companyid);
+		query.setParameter("userid", userid);
+		
+		List<Wettopup> list = query.list();
+		return list;
+	}
 }

@@ -10,5 +10,13 @@ import com.example.bank.model.MasterKiosk;
 public interface MasterKioskService {
 	
 	public List<MasterKiosk> getmasterkiosk(Integer companyid,Integer productid);
+	
+	public void savemasterkiosk(MasterKiosk masterkiosk);
+	
+	public List<MasterKiosk> getmasterkiosk();
+	
+	public void deletemasterkiosk(MasterKiosk masterkiosk);
+	
+	public void updatemasterkiosk(MasterKiosk masterkiosk);
 
 }

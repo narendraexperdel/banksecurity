@@ -64,4 +64,16 @@ public class WemplayerServiceImpl implements WemplayerService {
 		return wemplayerRepository.homenonactiveplayer(companyid, fromdate, todate, productid);
 	}
 
+	@Override
+	public List<WemPlayer> birthdayplayer(Integer companyid, Date fromdate, Date todate) {
+		// TODO Auto-generated method stub
+		return wemplayerRepository.birthdayplayer(companyid, fromdate, todate);
+	}
+
+	@Override
+	public List<WemPlayer> getallprofiledatarbycompanyid(Integer companyid) {
+		// TODO Auto-generated method stub
+		return wemplayerRepository.getallprofiledatarbycompanyid(companyid);
+	}
+
 }

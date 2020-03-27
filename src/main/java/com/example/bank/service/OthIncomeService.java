@@ -15,5 +15,7 @@ public interface OthIncomeService {
 	public List bankcashflow_totol_othincome(String month, String year, Integer companyid);
 	
 	public List<OthIncome> outside_report_othincome(List<String> bank,Integer companyid,List<String> incometype,List<String> incomedet,Date fromdate,Date todate);
+	
+	 public  List<OthIncome>  home_othincome(Integer companyid,Date fromdate, Date todate);
 
 }

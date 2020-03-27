@@ -488,19 +488,19 @@ public class WettopupServiceImpl implements WettopupService {
 	}
 
 	@Override
-	public Double daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate, List<String> productid) {
+	public List<Wettopup> daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate, List<String> productid) {
 		// TODO Auto-generated method stub
 		return wettopupRepository.daily_mix_topup_amount(companyid, fromdate, todate, productid);
 	}
 
 	@Override
-	public Double daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate, List<String> productid) {
+	public List<Wettopup> daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate, List<String> productid) {
 		// TODO Auto-generated method stub
 		return wettopupRepository.daily_mix_topup_bonus(companyid, fromdate, todate, productid);
 	}
 
 	@Override
-	public Long daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate, List<String> productid) {
+	public List<Wettopup> daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate, List<String> productid) {
 		// TODO Auto-generated method stub
 		return wettopupRepository.daily_mix_topup_trancid(companyid, fromdate, todate, productid);
 	}
@@ -599,6 +599,69 @@ public class WettopupServiceImpl implements WettopupService {
 			Date fromdate, Date todate, List<String> status) {
 		// TODO Auto-generated method stub
 		return wettopupRepository.outside_report_claim_bonus(bank, companyid, productid, fromdate, todate, status);
+	}
+
+	@Override
+	public List<Wettopup> promotioncount(String promotioncd, List<String> userid, Integer companyid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.promotioncount(promotioncd, userid, companyid);
+	}
+
+	@Override
+	public List<Wettopup> promotioncount_monthly(String promotioncd, List<String> userid, Integer companyid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.promotioncount_monthly(promotioncd, userid, companyid);
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_amount(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.home_daily_mix_topup_amount(companyid, fromdate, todate, productid);
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_bonus(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.home_daily_mix_topup_bonus(companyid, fromdate, todate, productid);
+	}
+
+	@Override
+	public List<Wettopup> home_daily_mix_topup_trancid(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.home_daily_mix_topup_trancid(companyid, fromdate, todate, productid);
+	}
+
+	@Override
+	public List<Wettopup> eligiblebirthday(Integer companyid, List<String> productid, List<String> userid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.eligiblebirthday(companyid, productid, userid);
+	}
+
+	@Override
+	public void insertbirthday(Wettopup wettopup) {
+		// TODO Auto-generated method stub
+		wettopupRepository.insertbirthday(wettopup);
+	}
+
+	@Override
+	public List<String> weeklyuserid(Integer companyid, Date fromdate, Date todate) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.weeklyuserid(companyid, fromdate, todate);
+	}
+
+	@Override
+	public List<Wettopup> teledata(String month, String year, Integer companyid) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.teledata(month, year, companyid);
+	}
+
+	@Override
+	public List<Wettopup> lastdepositdateandamount(Integer companyid, String userid, String month, String year) {
+		// TODO Auto-generated method stub
+		return wettopupRepository.lastdepositdateandamount(companyid, userid, month, year);
 	}
 	
 	

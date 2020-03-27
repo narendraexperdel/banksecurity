@@ -19,6 +19,7 @@ import com.example.bank.model.CmcProduct;
 import com.example.bank.model.ReferalBonus;
 import com.example.bank.model.TmpPlayer;
 import com.example.bank.model.Wettopup;
+import com.example.bank.model.Wettp;
 import com.example.bank.model.Wetwithdraw;
 import com.example.bank.service.CmcproductService;
 import com.example.bank.service.ReferalbonusService;
@@ -86,6 +87,11 @@ public class CashflowproductplayerController {
 				  
 				  List<ReferalBonus> cashflowproductplayer_referal = referalbonusService.cashflowproduct_referal(wettopup.getDateOfissue(), wettopup.getTodate(), wettopup.getCompanyid1(), product_itr);
 				  
+				  List<Wettp> cashflowproductplayer_tp = wettpService.cashflowproduct_tp(wettopup.getDateOfissue(), wettopup.getTodate(), wettopup.getCompanyid1(), product_itr);
+				  
+				  List<Wettp> cashflowproductplayer_tp_toproduct = wettpService.cashflowproduct_tp_toproduct(wettopup.getDateOfissue(), wettopup.getTodate(), wettopup.getCompanyid1(), product_itr);
+				  
+				  
 				  Iterator cashflowproductplayer_itr = cashflowproductplayer.iterator();
 		 		   
 				   while(cashflowproductplayer_itr.hasNext()){
@@ -113,8 +119,7 @@ public class CashflowproductplayerController {
 					   
 					  
 				   }
-				  
-				  
+				    
 				   Iterator cashflowproductplayer_referal_itr = cashflowproductplayer_referal.iterator();
 				   while(cashflowproductplayer_referal_itr.hasNext()){
 					   Wettopup wettopup1 = new Wettopup();
@@ -131,6 +136,45 @@ public class CashflowproductplayerController {
 					   
 					  
 				   }
+				   
+				   
+				   
+                    Iterator cashflowproductplayer_tp_itr = cashflowproductplayer_tp.iterator();
+				   
+				   while(cashflowproductplayer_tp_itr.hasNext()){
+					   Wettopup wettopup1 = new Wettopup();
+					   Object[] obj1 = (Object[]) cashflowproductplayer_tp_itr.next();
+					   
+					   
+					   wettopup1.setUserid(String.valueOf(obj1[0]));
+					   wettopup1.setProductid(String.valueOf(obj1[1]));
+					   
+					  boolean ans = mix_userid.contains(wettopup1);
+					  if(!ans) {
+						  mix_userid.add(wettopup1);
+					  }
+					   
+					  
+				   }
+				   
+               Iterator cashflowproductplayer_tp_toproduct_itr = cashflowproductplayer_tp_toproduct.iterator();
+				   
+				   while(cashflowproductplayer_tp_toproduct_itr.hasNext()){
+					   Wettopup wettopup1 = new Wettopup();
+					   Object[] obj1 = (Object[]) cashflowproductplayer_tp_toproduct_itr.next();
+					   
+					   
+					   wettopup1.setUserid(String.valueOf(obj1[0]));
+					   wettopup1.setProductid(String.valueOf(obj1[1]));
+					   
+					  boolean ans = mix_userid.contains(wettopup1);
+					  if(!ans) {
+						  mix_userid.add(wettopup1);
+					  }
+					   
+					  
+				   }
+				   
 			}  
 				  
 				  Iterator mix_userid_itr = mix_userid.iterator();
@@ -199,7 +243,7 @@ public class CashflowproductplayerController {
 						}
 						
 						temp_cashflowproduct_list.put("product", obj1.getProductid());
-						temp_cashflowproduct_list.put("userid", obj1.getUserid());
+						temp_cashflowproduct_list.put("userid", obj1.getUserid().toUpperCase());
 						temp_cashflowproduct_list.put("contactmethod", conmethod);
 						temp_cashflowproduct_list.put("topup", cashflowproduct_topup);
 						temp_cashflowproduct_list.put("withdraw", cashflowproduct_withdraw);

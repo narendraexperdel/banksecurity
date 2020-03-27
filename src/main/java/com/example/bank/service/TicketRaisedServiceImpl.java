@@ -7,24 +7,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.bank.bean.TicketRaised;
+import com.example.bank.bean.TicketRaisedBean;
+import com.example.bank.repository.TicketRaisedRepository;
 import com.example.bank.repository.TicketRaisedRepositoryImpl;
 
 @Component
 public class TicketRaisedServiceImpl implements TicketRaisedService{
 	
+	
 	@Autowired
-	TicketRaisedRepositoryImpl ticketraisedrepositoryImpl;
+	TicketRaisedRepository ticketraisedRepository;
 
 	@Override
-	public TicketRaised saveticketraised(TicketRaised ticketraised) throws SQLException {
+	public TicketRaised saveticketraised(TicketRaisedBean ticketraised) throws SQLException {
 		// TODO Auto-generated method stub
-		return ticketraisedrepositoryImpl.saveticket(ticketraised);
+		return ticketraisedRepository.saveticket(ticketraised);
 	}
 
 	@Override
 	public List<TicketRaised> allTicket() throws SQLException {
 		// TODO Auto-generated method stub
-		return ticketraisedrepositoryImpl.allTicket();
+		return ticketraisedRepository.allTicket();
+	}
+
+	@Override
+	public Long pendingticketcount() {
+		// TODO Auto-generated method stub
+		return ticketraisedRepository.pendingticketcount();
 	}
 
 	

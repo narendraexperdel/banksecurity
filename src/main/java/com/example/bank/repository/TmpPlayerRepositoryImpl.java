@@ -271,4 +271,66 @@ public class TmpPlayerRepositoryImpl implements TmpPlayerCustomRepository{
 		return (List<TmpPlayer>) cre.list();
 	}
 
+	@Override
+	public List<TmpPlayer> allprofileuserid(Integer wemplayerid, Integer companyid) {
+		 char as ='1';
+		 Criteria cre = entityManager.unwrap(Session.class).createCriteria(TmpPlayer.class);
+		cre.add(Restrictions.eq("wemplayerid.id", wemplayerid));
+		cre.add(Restrictions.eq("companyid.id", companyid));
+		cre.add(Restrictions.eq("allocationstatus", as));
+		cre.add(Restrictions.isNotNull("wemplayerid"));
+	
+		return (List<TmpPlayer>) cre.list();
+	}
+
+	@Override
+	public List<TmpPlayer> getwemplayerid(String userid, Integer companyid) {
+		 char as ='1';
+		 Criteria cre = entityManager.unwrap(Session.class).createCriteria(TmpPlayer.class);
+		cre.add(Restrictions.eq("userid", userid));
+		cre.add(Restrictions.eq("companyid.id", companyid));
+		cre.add(Restrictions.eq("allocationstatus", as));
+		cre.add(Restrictions.isNotNull("wemplayerid"));
+	
+		return (List<TmpPlayer>) cre.list();
+	}
+
+	@Override
+	public List<TmpPlayer> gettopupplayer_statisticcs(Integer companyid, List<String> productid, Integer wemplayerid,
+			Date fromdate, Date todate) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+		String ft = format.format(fromdate);
+		String td = format.format(todate);
+		try {
+			Date   date       = format.parse (ft);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		try {
+			Date   date       = format.parse (td);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		
+		String SQL_Query = "select *  from TMP_player where Company_Id =:companyid\r\n" + 
+				"and PRODUCT_ID In (:productid) and wemplayer_id in (:wemplayerid) and cast(ISSUEDDT as date) between :fromdate and :todate";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("companyid", companyid);
+		query.setParameter("productid", productid);
+		query.setParameter("wemplayerid", wemplayerid);
+		query.setParameter("fromdate", ft);
+		query.setParameter("todate", td);
+		
+		List<TmpPlayer> list = query.list();
+		return list;
+	}
+
 }

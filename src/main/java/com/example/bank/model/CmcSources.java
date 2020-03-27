@@ -29,6 +29,7 @@ public class CmcSources {
 	@Column(name = "CLOSE_")
 	private String close;
 	
+	
 	@OneToOne
     @JoinColumn(name="COMPANY_ID")
 	private MainCompany companyid;
@@ -71,8 +72,8 @@ public class CmcSources {
 
 	public void setCompanyid(MainCompany companyid) {
 		this.companyid = companyid;
+		
 	}
 
 
-	
 }

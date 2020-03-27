@@ -31,9 +31,9 @@ public class KioskWithdraw {
 	@Column(name = "AMOUNT")
 	private Double amount;
 	
-	@OneToOne
-    @JoinColumn(name="USER_ID")
-	 private TmpPlayer userid;
+	
+    @Column(name="USER_ID")
+	 private String userid;
 	
 	@OneToOne
     @JoinColumn(name="PRODUCT_ID")
@@ -83,11 +83,11 @@ public class KioskWithdraw {
 		this.amount = amount;
 	}
 
-	public TmpPlayer getUserid() {
+	public String getUserid() {
 		return userid;
 	}
 
-	public void setUserid(TmpPlayer userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 

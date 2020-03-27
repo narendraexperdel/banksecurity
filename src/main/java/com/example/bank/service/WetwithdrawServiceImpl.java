@@ -227,4 +227,16 @@ public class WetwithdrawServiceImpl implements WetwithdrawService{
 		return wetwithdrawRepository.daily_mix_withdraw_taxamount(companyid, fromdate, todate, productid);
 	}
 
+	@Override
+	public List<String> weeklywithdrawuserid(Integer companyid, Date fromdate, Date todate,String userid,String productid) {
+		// TODO Auto-generated method stub
+		return wetwithdrawRepository.weeklywithdrawuserid(companyid, fromdate, todate,userid,productid);
+	}
+
+	@Override
+	public Double withdrawamount_profiledata(List<String> userid, Integer companyid) {
+		// TODO Auto-generated method stub
+		return wetwithdrawRepository.withdrawamount_profiledata(userid, companyid);
+	}
+
 }

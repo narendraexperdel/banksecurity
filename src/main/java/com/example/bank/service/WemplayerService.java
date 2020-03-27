@@ -25,4 +25,8 @@ public interface WemplayerService {
 	public List<WemPlayer> homeactiveplayer(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	
 	public List<WemPlayer> homenonactiveplayer(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	
+	public List<WemPlayer> birthdayplayer(Integer companyid,Date fromdate, Date todate);
+	
+	public List<WemPlayer> getallprofiledatarbycompanyid(Integer companyid); 
 }

@@ -375,4 +375,53 @@ public class WettpRepositoryImpl implements WettpCustomRepository{
 		return list;
 	}
 
+	@Override
+	public List<Wettp> cashflowproduct_tp(Date fromdate, Date todate, Integer companyid, String productid) {
+		String SQL_Query = "select DISTINCT(FRM_USER),FRM_PRODUCT FROM wet_tp WHERE issueddt between :fromdate and :todate and company_id = :companyid and status = 'Posted' and FRM_Product =:frmproduct";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("companyid", companyid);
+		query.setParameter("frmproduct", productid);
+		
+		List<Wettp> list = query.list();
+		return list;
+	}
+
+	@Override
+	public List<Wettp> cashflowproduct_tp_toproduct(Date fromdate, Date todate, Integer companyid, String productid) {
+		String SQL_Query = "select DISTINCT(TO_USER),TO_PRODUCT FROM wet_tp WHERE issueddt between :fromdate and :todate and company_id = :companyid and status = 'Posted' and TO_Product =:toproductid";
+		Query query = entityManager.unwrap(Session.class).createSQLQuery(
+				SQL_Query);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("companyid", companyid);
+		query.setParameter("toproductid", productid);
+		
+		List<Wettp> list = query.list();
+		return list;
+	}
+
+	@Override
+	public Double daily_mix_wettp_transferin_amount(Integer companyid, Date fromdate, Date todate,
+			List<String> productid) {
+		Criteria cr =  entityManager.unwrap(Session.class).createCriteria(Wettp.class).add(
+		        Restrictions.and
+		        (
+		        		  Restrictions.eq("companyid.id", companyid),
+		        		  Restrictions.between("issueddate", fromdate, todate),
+				            Restrictions.eq("status", "Posted"),
+				            Restrictions.in("toproduct", productid)
+				           
+		           
+		        )
+		    );
+		
+		ProjectionList projectionList = Projections.projectionList();
+	    
+	    cr.setProjection(Projections.sum("amount"));
+		return (Double) cr.uniqueResult();
+	}
+
 }

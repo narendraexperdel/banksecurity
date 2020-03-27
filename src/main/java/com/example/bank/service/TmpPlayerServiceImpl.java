@@ -94,4 +94,23 @@ public class TmpPlayerServiceImpl implements TmpPlayerService{
 		return tmpplayerRepository.checkuserid(productid, userid, companyid);
 	}
 
+	@Override
+	public List<TmpPlayer> allprofileuserid(Integer wemplayerid, Integer companyid) {
+		// TODO Auto-generated method stub
+		return tmpplayerRepository.allprofileuserid(wemplayerid, companyid);
+	}
+
+	@Override
+	public List<TmpPlayer> getwemplayerid(String userid, Integer companyid) {
+		// TODO Auto-generated method stub
+		return tmpplayerRepository.getwemplayerid(userid, companyid);
+	}
+
+	@Override
+	public List<TmpPlayer> gettopupplayer_statisticcs(Integer companyid, List<String> productid, Integer wemplayerid,
+			Date fromdate, Date todate) {
+		// TODO Auto-generated method stub
+		return tmpplayerRepository.gettopupplayer_statisticcs(companyid, productid, wemplayerid, fromdate, todate);
+	}
+
 }

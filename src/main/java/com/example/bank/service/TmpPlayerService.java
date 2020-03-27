@@ -35,4 +35,10 @@ public interface TmpPlayerService {
 	public List<Integer> playercount_closesum(List<String> userid,Integer companyid);
 	
 	public List<TmpPlayer> checkuserid(String productid,String userid,Integer companyid);
+	
+    public List<TmpPlayer> allprofileuserid(Integer wemplayerid,Integer companyid);
+	
+	public List<TmpPlayer> getwemplayerid(String userid,Integer companyid);
+	
+	public List<TmpPlayer> gettopupplayer_statisticcs(Integer companyid,List<String> productid,Integer wemplayerid,Date fromdate,Date todate);
 }

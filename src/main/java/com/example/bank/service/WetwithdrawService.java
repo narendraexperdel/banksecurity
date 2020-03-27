@@ -77,4 +77,10 @@ public interface WetwithdrawService {
 	 public List<Wetwithdraw> outside_report_claim_gst(Integer companyid,List<String> productid,Date fromdate,Date todate,List<String> status);
 	 
 	 public  Double  daily_mix_withdraw_taxamount(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 
+	 public  List<String>  weeklywithdrawuserid(Integer companyid,Date fromdate,Date todate,String userid, String productid);
+	 
+	 public Double withdrawamount_profiledata(List<String> userid,Integer companyid);
+	 
+	 
 }

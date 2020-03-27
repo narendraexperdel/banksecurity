@@ -161,13 +161,13 @@ public interface WettopupCustomRepository {
 	 
 	 public  List<Wettopup>  daily_mix_wettopup(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	 
-	 public  Double  daily_mix_topup_amount(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 public  List<Wettopup>  daily_mix_topup_amount(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	 
 	 public  Double  daily_mix_topup_madj_amount(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	 
-	 public  Double  daily_mix_topup_bonus(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 public  List<Wettopup>  daily_mix_topup_bonus(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	 
-	 public  Long  daily_mix_topup_trancid(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 public  List<Wettopup>  daily_mix_topup_trancid(Integer companyid,Date fromdate, Date todate,List<String> productid);
 	 
 	 public List<Wettopup> outside_report_unclaim(List<String> bank,Integer companyid,List<String> productid,Date fromdate,Date todate);
 	 
@@ -194,4 +194,25 @@ public interface WettopupCustomRepository {
 	 public List<Wettopup> homependingtopup(Integer companyid,List<String> productid,Date fromdate,Date todate);
 	 
 	 public List<Wettopup> freebonus_home(Date fromdate, Date todate, Integer companyid);
+	 
+	 public List<Wettopup> promotioncount(String promotioncd, List<String> userid, Integer companyid);
+	 
+	 public List<Wettopup> promotioncount_monthly(String promotioncd, List<String> userid, Integer companyid);
+	 
+	 public  List<Wettopup>  home_daily_mix_topup_amount(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 
+     public  List<Wettopup>  home_daily_mix_topup_bonus(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 
+	 public  List<Wettopup>  home_daily_mix_topup_trancid(Integer companyid,Date fromdate, Date todate,List<String> productid);
+	 
+	 public  List<Wettopup>  eligiblebirthday(Integer companyid,List<String> productid,List<String> userid);
+	 
+	 public  void  insertbirthday(Wettopup wettopup);
+	 
+	 public  List<String>  weeklyuserid(Integer companyid,Date fromdate,Date todate);
+	 
+	 public  List<Wettopup> teledata(String month,String year,Integer companyid);
+	 
+	 public  List<Wettopup> lastdepositdateandamount(Integer companyid,String userid,String month,String year);
+	 
 }

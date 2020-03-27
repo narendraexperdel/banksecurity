@@ -1,5 +1,8 @@
 package com.example.bank.bean;
 
+import java.io.File;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +32,10 @@ public class TicketRaised {
 	private String ticketid;
 	
 	@Column(name="Ticket_Raised_Date")
-	private String ticketraiseddate;
+	private Date ticketraiseddate;
+	
+	@Column(name="Ticket_date")
+	private String ticketdate;
 	
 	@Column(name = "CASE_NUMBER")
 	private String casenumber;
@@ -41,7 +47,7 @@ public class TicketRaised {
 	private String status;
 	
 	@Column(name = "LAST_EDIT_DATE")
-	private String lasteditdate;
+	private Date lasteditdate;
 	
 	@Column(name="ASSIGNTO")
 	private String assignto;
@@ -60,6 +66,24 @@ public class TicketRaised {
 	
 	@Column(name = "FROM_TRANSFER")
 	private String fromtransfer;
+	
+	@Column(name = "AMOUNT")
+	private Double amount;
+	
+	@Column(name = "BANK_NAME")
+	private String bankname;
+	
+	@Column(name = "BANK_ACCOUNT")
+	private String bankaccount;
+	
+	@Column(name = "TO_GAME")
+	private String togame;
+	
+	@Column(name = "TO_USERID")
+	private String touserid;
+	
+/*	@Column(name = "FILE")
+	private File file;*/
 	
 	public Integer getId() {
 		return id;
@@ -95,18 +119,18 @@ public class TicketRaised {
 		this.ticketid = ticketid;
 	}
 
-	public String getTicketraiseddate() {
+	public Date getTicketraiseddate() {
 		return ticketraiseddate;
 	}
 
-	public void setTicketraiseddate(String ticketraiseddate) {
+	public void setTicketraiseddate(Date ticketraiseddate) {
 		this.ticketraiseddate = ticketraiseddate;
 	}
 	
 	
 
 	public TicketRaised(Integer id, String subject, String description, String email, String ticketid,
-			String ticketraiseddate) {
+			Date ticketraiseddate) {
 		super();
 		this.id = id;
 		this.subject = subject;
@@ -159,11 +183,11 @@ public class TicketRaised {
 		this.status = status;
 	}
 
-	public String getLasteditdate() {
+	public Date getLasteditdate() {
 		return lasteditdate;
 	}
 
-	public void setLasteditdate(String lasteditdate) {
+	public void setLasteditdate(Date lasteditdate) {
 		this.lasteditdate = lasteditdate;
 	}
 
@@ -215,6 +239,63 @@ public class TicketRaised {
 		this.fromtransfer = fromtransfer;
 	}
 
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public String getBankname() {
+		return bankname;
+	}
+
+	public void setBankname(String bankname) {
+		this.bankname = bankname;
+	}
+
+	public String getBankaccount() {
+		return bankaccount;
+	}
+
+	public void setBankaccount(String bankaccount) {
+		this.bankaccount = bankaccount;
+	}
+
+	public String getTogame() {
+		return togame;
+	}
+
+	public void setTogame(String togame) {
+		this.togame = togame;
+	}
+
+	public String getTouserid() {
+		return touserid;
+	}
+
+	public void setTouserid(String touserid) {
+		this.touserid = touserid;
+	}
+
+	public String getTicketdate() {
+		return ticketdate;
+	}
+
+	public void setTicketdate(String ticketdate) {
+		this.ticketdate = ticketdate;
+	}
+
+	/*public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}*/
+
+	
 	
     
 }

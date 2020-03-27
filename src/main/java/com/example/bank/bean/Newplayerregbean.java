@@ -61,8 +61,45 @@ public class Newplayerregbean {
 	 private String password;
 	 
 	 private String kiosk;
+	 
+	 private String issuedby;
+	 
+	 private Integer companyid;
+	 
+	 private Integer bankid;
+	 
+	 private String loginid;
+	 
+	 private Integer product_id;
+	 
+	 private Integer fromproductid;
+	 
+	 private Integer toproductid;
+	 
+	 private String fromplayerid;
+	 
+	 private String toplayerid;
+	 
+	 private Integer bid;
+	 
+	 private String bankacc;
+	 
+	 private String bankholder;
+	 
+	 private Integer masterkioskid;
+	 
+	 private Integer masterwithdrawid;
+	 
+	 private Integer masterdepositid;
+	 
+	 private Integer removevsaddid;
 
-
+	 private Integer scrapperwithdrawid;
+	 
+	 private Integer kioskdepositid;
+	 
+	 private Integer kioskwithdrawid;
+	 
 	 @JsonDeserialize(using = CustomerDateAndTimeDeserialize.class)
 	public Date getDateOfissue() {
 		return dateOfissue;
@@ -287,6 +324,159 @@ public class Newplayerregbean {
 		this.kiosk = kiosk;
 	}
 
+	public String getIssuedby() {
+		return issuedby;
+	}
+
+	public void setIssuedby(String issuedby) {
+		this.issuedby = issuedby;
+	}
+
+	public Integer getCompanyid() {
+		return companyid;
+	}
+
+	public void setCompanyid(Integer companyid) {
+		this.companyid = companyid;
+	}
+
+	public Integer getBankid() {
+		return bankid;
+	}
+
+	public void setBankid(Integer bankid) {
+		this.bankid = bankid;
+	}
+
+	public String getLoginid() {
+		return loginid;
+	}
+
+	public void setLoginid(String loginid) {
+		this.loginid = loginid;
+	}
+
+	public Integer getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(Integer product_id) {
+		this.product_id = product_id;
+	}
+
+	public Integer getFromproductid() {
+		return fromproductid;
+	}
+
+	public void setFromproductid(Integer fromproductid) {
+		this.fromproductid = fromproductid;
+	}
+
+	public Integer getToproductid() {
+		return toproductid;
+	}
+
+	public void setToproductid(Integer toproductid) {
+		this.toproductid = toproductid;
+	}
+
+	public String getFromplayerid() {
+		return fromplayerid;
+	}
+
+	public void setFromplayerid(String fromplayerid) {
+		this.fromplayerid = fromplayerid;
+	}
+
+	public String getToplayerid() {
+		return toplayerid;
+	}
+
+	public void setToplayerid(String toplayerid) {
+		this.toplayerid = toplayerid;
+	}
+
+	public Integer getBid() {
+		return bid;
+	}
+
+	public void setBid(Integer bid) {
+		this.bid = bid;
+	}
+
+	public String getBankacc() {
+		return bankacc;
+	}
+
+	public void setBankacc(String bankacc) {
+		this.bankacc = bankacc;
+	}
+
+	public String getBankholder() {
+		return bankholder;
+	}
+
+	public void setBankholder(String bankholder) {
+		this.bankholder = bankholder;
+	}
+
+	public Integer getMasterkioskid() {
+		return masterkioskid;
+	}
+
+	public void setMasterkioskid(Integer masterkioskid) {
+		this.masterkioskid = masterkioskid;
+	}
+
+	public Integer getMasterwithdrawid() {
+		return masterwithdrawid;
+	}
+
+	public void setMasterwithdrawid(Integer masterwithdrawid) {
+		this.masterwithdrawid = masterwithdrawid;
+	}
+
+	public Integer getMasterdepositid() {
+		return masterdepositid;
+	}
+
+	public void setMasterdepositid(Integer masterdepositid) {
+		this.masterdepositid = masterdepositid;
+	}
+
+	public Integer getRemovevsaddid() {
+		return removevsaddid;
+	}
+
+	public void setRemovevsaddid(Integer removevsaddid) {
+		this.removevsaddid = removevsaddid;
+	}
+
+	public Integer getScrapperwithdrawid() {
+		return scrapperwithdrawid;
+	}
+
+	public void setScrapperwithdrawid(Integer scrapperwithdrawid) {
+		this.scrapperwithdrawid = scrapperwithdrawid;
+	}
+
+	public Integer getKioskdepositid() {
+		return kioskdepositid;
+	}
+
+	public void setKioskdepositid(Integer kioskdepositid) {
+		this.kioskdepositid = kioskdepositid;
+	}
+
+	public Integer getKioskwithdrawid() {
+		return kioskwithdrawid;
+	}
+
+	public void setKioskwithdrawid(Integer kioskwithdrawid) {
+		this.kioskwithdrawid = kioskwithdrawid;
+	}
+
+	
 	
    
 }

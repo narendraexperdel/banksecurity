@@ -75,4 +75,8 @@ public interface WetwithdrawCutomRepository {
      public  List<Wetwithdraw> outside_report_unclaim_gst(Integer companyid,List<String> productid,Date fromdate,Date todate);
 	 
 	 public List<Wetwithdraw> outside_report_claim_gst(Integer companyid,List<String> productid,Date fromdate,Date todate,List<String> status);
+	 
+	 public  List<String>  weeklywithdrawuserid(Integer companyid,Date fromdate,Date todate,String userid,String productid);
+	 
+	 public Double withdrawamount_profiledata(List<String> userid,Integer companyid);
 }
